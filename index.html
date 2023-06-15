@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+  .wrapper{
+    width: 500px;
+    margin: 0 auto;
+  }
+  input{
+    min-width: 200px;
+    max-width: 350px;
+    height: 30px;
+    font-size: 18px;
+  }
+  button{
+    height: 30px;
+    margin-top: 10px;
+  }
+  button:last-child:active{
+    background-color: blue;
+    color: white;
+    border: none;
+  }
+  button:first-child{
+    cursor: pointer;
+  }
+  .btns{
+    width: 228px;
+    display: flex;
+    justify-content: space-between;
+  }
+</style>
+<body>
+<div class="wrapper">
+  <div>
+    <input type="text" id="textCopy">
+  </div>
+  <div class="btns">
+    <button onclick="shorted()">Сократить</button>
+    <button onclick="copyText()">Скопировать</button>
+  </div>
+    <b id="copied"></b>
+</div>
+
+<script>
+function copyText(){
+  const text = document.getElementById('textCopy').value;
+  let tempInput = document.createElement('input');
+  let textCopied = document.getElementById('copied');
+  console.log(text);
+  tempInput.value = text;
+
+  document.body.appendChild(tempInput);
+  tempInput.select();
+  document.execCommand("copy");
+  document.body.removeChild(tempInput);
+  textCopied.innerText = "Ссылка скопирована";
+  setTimeout(() => { textCopied.innerText = "" }, 500)
+}
+
+function shorted(){
+  let text = document.getElementById('textCopy');
+
+  if (!text.value){
+      alert("Вы не ввели ссылку!")
+      return;
+  }
+
+  const url = "shorten.php";
+  let formatData = new FormData();
+  formatData.append('url', text.value)
+
+  fetch(url, {
+    method: "POST",
+    body: formatData
+  })
+  .then(response => response.text())
+    .then(data => {
+        text.value = data;
+      })
+}
+</script>
+</body>
+</html>

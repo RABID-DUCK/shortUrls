@@ -1,0 +1,7 @@
+DirectoryIndex index.html
+Options -Indexes
+php_flag register_globals off
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ /readyUrl.php?url=$1 [L]
